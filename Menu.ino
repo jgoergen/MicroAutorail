@@ -73,13 +73,24 @@ void runDataEntry() {
         bedPos += rotChange;
         stepper.step(rotChange);
         dispVal = bedPos;
-    
+        
     } else if(int(menuIndex) == 3) {
+
+      rotationPosition += rotChange;
+      rotationServo.write(rotationPosition);
+      dispVal = rotationPosition;
+      
+    } else if(int(menuIndex) == 4) {
+
+      rotationChange += rotChange;
+      dispVal = rotationChange;
+      
+    } else if(int(menuIndex) == 5) {
 
         pause += rotChange;
         dispVal = pause;
     
-    } else if(int(menuIndex) == 4) {
+    } else if(int(menuIndex) == 6) {
 
         iterations += rotChange;
         dispVal = iterations;
@@ -100,11 +111,11 @@ void runDataSelection() {
     
     // data selection bounds
 
-    if (menuIndex > 5)
-        menuIndex = 5;
+    if (menuIndex > 7)
+        menuIndex = 0;
 
     if (menuIndex < 0)
-        menuIndex = 0;
+        menuIndex = 7;
 
     // display selected data
     
@@ -115,10 +126,14 @@ void runDataSelection() {
     else if (menuIndex == 2)
         u8g2.drawStr(0, 0, "Adjust bed");
     else if (menuIndex == 3)
-        u8g2.drawStr(0, 0, "Pause time");
+        u8g2.drawStr(0, 0, "Adjust rotation");
     else if (menuIndex == 4)
+        u8g2.drawStr(0, 0, "Rotation change");
+    else if (menuIndex == 5)
+        u8g2.drawStr(0, 0, "Pause time");
+    else if (menuIndex == 6)
         u8g2.drawStr(0, 0, "Iterations");
-    else if (menuIndex == 5) {
+    else if (menuIndex == 7) {
     
         u8g2.drawStr(0, 0, "START JOB");
 

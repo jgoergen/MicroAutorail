@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <U8g2lib.h> // download from here https://www.arduinolibraries.info/libraries/u8g2
 #include <Adafruit_NeoPixel.h>
+#include <Servo.h>
 
 // pin definitions
 
@@ -16,6 +17,7 @@
 #define ROTARY_ENCODER_B_PIN        7
 #define ROTARY_ENCODER_BUTTON_PIN   9
 #define IR_LED_PIN                  10
+#define SERVO_PIN                   11
 
 // config
 
@@ -26,6 +28,9 @@
 #define BASE_PAUSE                  2000
 #define BASE_ITERATIONS             25
 #define BASE_PRE_PHOTO_PAUSE        2000
+#define BASE_ROTATION_POSITION      90    // 0 - 180
+#define BASE_ROTATION_CHANGE        0
+#define SERVO_MOVE_DELAY            30
 
 volatile unsigned int encoder0Pos = 5000;
 bool lastButtonVal = false;
@@ -45,7 +50,12 @@ int prePhotoPause = BASE_PRE_PHOTO_PAUSE;
 int bedPos = 0;
 int lightVal = 150;
 int lvChange = 5;
+int rotationPosition = BASE_ROTATION_POSITION;
+int rotationChange = BASE_ROTATION_CHANGE;
+int rotationOffset = 0;
+int newRotationOffset = 0;
 
+Servo rotationServo;
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 Stepper stepper(BASE_STEPS_PER_ROTATION, MOTOR_1_B2_PIN, MOTOR_1_A2_PIN, MOTOR_1_B1_PIN, MOTOR_1_A1_PIN);
@@ -57,6 +67,7 @@ void setup() {
     pinMode(ROTARY_ENCODER_A_PIN, INPUT);
     pinMode(ROTARY_ENCODER_B_PIN, INPUT);
     attachInterrupt(0, doEncoder, CHANGE);  // encoder pin on interrupt 0 - pin 2
+    rotationServo.attach(SERVO_PIN);
     pinMode(ROTARY_ENCODER_BUTTON_PIN, INPUT);
     
     // setup ir led
