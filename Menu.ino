@@ -49,7 +49,7 @@ void runDataEntry() {
 
     int dispVal = 0;
      
-    if (int(menuIndex) == 5) {
+    if (int(menuIndex) == 7) {
 
         // special selection, this actually starts running the task.
 

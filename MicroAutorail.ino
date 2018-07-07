@@ -67,7 +67,6 @@ void setup() {
     pinMode(ROTARY_ENCODER_A_PIN, INPUT);
     pinMode(ROTARY_ENCODER_B_PIN, INPUT);
     attachInterrupt(0, doEncoder, CHANGE);  // encoder pin on interrupt 0 - pin 2
-    rotationServo.attach(SERVO_PIN);
     pinMode(ROTARY_ENCODER_BUTTON_PIN, INPUT);
     
     // setup ir led

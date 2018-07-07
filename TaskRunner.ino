@@ -1,5 +1,7 @@
 void startTask() {
 
+    rotationServo.attach(SERVO_PIN);
+    
     // reset values
 
     stepper.setSpeed(rpm);
@@ -66,7 +68,8 @@ void runTask() {
         }
 
         // stop the running task
-        
+
+        rotationServo.detach();
         taskRunning = false;
         delay(1000);
         return;
